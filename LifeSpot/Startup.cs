@@ -59,9 +59,9 @@ namespace LifeSpot
                     await context.Response.WriteAsync(css);
                 });
 
-                endpoints.MapGet("/Static/Scripts/welcome.js", async context =>
+                endpoints.MapGet("/Static/Scripts/index.js", async context =>
                 {
-                    var viewPath = Path.Combine(Directory.GetCurrentDirectory(), "Static", "Scripts", "welcome.js");
+                    var viewPath = Path.Combine(Directory.GetCurrentDirectory(), "Static", "Scripts", "index.js");
                     var script = await File.ReadAllTextAsync(viewPath);
                     await context.Response.WriteAsync(script);
                 });
@@ -72,7 +72,23 @@ namespace LifeSpot
                     var script = await File.ReadAllTextAsync(viewPath);
                     await context.Response.WriteAsync(script);
                 });
-              
+
+                endpoints.MapGet("/about", async context =>
+                {
+                    var viewPath = Path.Combine(Directory.GetCurrentDirectory(), "Views", "about.html");
+                    var html = new StringBuilder(await File.ReadAllTextAsync(viewPath))
+                       .Replace("<!--SIDEBAR-->", sideBarHtml)
+                       .Replace("<!--FOOTER-->", footerHtml);
+
+                    await context.Response.WriteAsync(html.ToString());
+                });
+
+                endpoints.MapGet("/Static/Scripts/about.js", async context =>
+                {
+                    var viewPath = Path.Combine(Directory.GetCurrentDirectory(), "Static", "Scripts", "about.js");
+                    var script = await File.ReadAllTextAsync(viewPath);
+                    await context.Response.WriteAsync(script);
+                });
             });
         }
     }
